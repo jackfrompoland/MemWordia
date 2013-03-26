@@ -1,0 +1,39 @@
+***1***
+//probuje to zrozumiec:
+//tworzymy klase
+//change- slowo kluczowe, zmiana jaka ma byc dokonana na bazie
+//create_table, tworzy tabele o nazwie users
+//argumentem jest blok |t|, nie wiem co on dostarcza???
+//tworzymy pola	'name', 'email', ktore sa rodzaju string
+//'timestamps' to slowo kluczowe, ktore tworzy dwa pola tabeli:
+//'created_at' oraz 'updated_at'
+
+
+class CreateUsers < ActiveRecord::Migration
+  def change
+    create_table :users do |t| 
+      t.string :name
+      t.string :email
+
+      t.timestamps
+    end
+  end
+end
+
+***2*** 
+nie rozumiem jak komendy z konsoli rails sa tlumaczone na SQL:
+
+1.9.3-p385 :001 > User.first.remember_token
+  User Load (0.2ms)  SELECT "users".* FROM "users" LIMIT 1
+ => nil 
+1.9.3-p385 :002 > User.all.each { |user| user.save(validate: false) }
+  User Load (0.5ms)  SELECT "users".* FROM "users" 
+   (0.1ms)  begin transaction
+   (21.7ms)  UPDATE "users" SET "remember_token" = 'luhR5XVLRID6VRVQwuVhzQ', "updated_at" = '2013-02-13 14:44:31.711496' WHERE "users"."id" = 1
+   (238.1ms)  commit transaction
+   (0.2ms)  begin transaction
+   (1.3ms)  UPDATE "users" SET "remember_token" = 'tBE4fjn82SE3PfxgL1iqiA', "updated_at" = '2013-02-13 14:44:31.990181' WHERE "users"."id" = 2
+   (204.4ms)  commit transaction
+   (0.1ms)  begin transaction
+   (1.2ms)  UPDATE "users" SET "remember_token" = 'BaOPZUkpiLHyccbRJQzaWA', "updated_at" = '2013-02-13 14:44:32.199009' WHERE "users"."id" = 3
+   (195.5ms)  commit transaction

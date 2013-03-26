@@ -1,0 +1,438 @@
+***************
+kurs jest wziety z:
+http://ruby.railstutorial.org/ruby-on-rails-tutorial-book
+***************
+
+
+Ruby on rails
+
+def h
+puts "Hello World!"
+end
+
+
+def h(name)
+puts "Hello #{name}!"
+end
+
+
+//argument z wartoscia domyslna
+def h(name = "World")
+puts "Hello #{name.capitalize}!"
+end
+
+
+class Greeter
+   def initialize(name = "World") #initialize to jest slowo kluczowe, taki konstruktor
+     @name = name                 #pole klasy
+   end
+   def say_hi                     #definicja metody, 
+     puts "Hi #{@name}!"          #puts drukuje na ekran i dodaje \n. print nie dodaje
+   end
+   def say_bye                      
+     puts "Bye #{@name}, come back soon."
+   end
+end
+
+
+g = Greeter.new("Pat")
+g.say_hi
+g.say_bye
+
+
+
+//wszystkie metody obiektu:
+Greeter.instance_methods
+
+//metody obiektu zaimplementowane przez nas:
+Greeter.instance_methods(false)
+
+
+//sprawdzamy, czy dana metode nasz obiekt moze wywolac
+irb(main):041:0> g.respond_to?("name")
+=> false
+irb(main):042:0> g.respond_to?("say_hi")
+=> true
+irb(main):043:0> g.respond_to?("to_s")
+=> true
+
+
+
+
+*** altering classes ***
+irb(main):044:0> class Greeter
+irb(main):045:1>   attr_accessor :name //to umozliwia nam dostep do pola "name", pokazane na przykladzie ponizej
+irb(main):046:1> end
+=> nil
+
+irb(main):047:0> g = Greeter.new("Andy")
+	=> #<Greeter:0x3c9b0 @name="Andy">
+irb(main):048:0> g.respond_to?("name")
+	=> true
+irb(main):049:0> g.respond_to?("name=")
+	=> true
+irb(main):050:0> g.say_hi
+	Hi Andy!
+	=> nil
+irb(main):051:0> g.name="Betty"
+	=> "Betty"
+irb(main):052:0> g
+	=> #<Greeter:0x3c9b0 @name="Betty">
+irb(main):053:0> g.name
+	=> "Betty"
+irb(main):054:0> g.say_hi
+	Hi Betty!
+	=> nil
+
+
+***konwersja
+
+ typow***
+to_s converts things to strings.
+to_i converts things to integers (numbers.)
+to_a converts things to arrays.
+
+ticket = [12, 12, 12]
+[12, 12, 12].m­ax
+ticket.max
+ticket.sort
+ticket.sort!   '!' oznacza, ze zmienna zostala zmieniona
+
+
+poem - jakas zmienna z wierszem
+poem['toast'] = 'honeydew' - tutaj zostana zmienione wszystkie wyrazy 'toast' na 'honeydew'
+poem.reverse - tutaj literki poprzestawia
+poem.lines.to_a.reverse
+print poem.lines.to_a.reverse.join
+poem.include? "my hand"
+
+
+
+books{}
+> books["Gra­vity's Rainb­ow"] = :sple­ndid   <- w ten sposob tworzymy macierz books z nowa pozycja do ktorej przyporzadkowujemy symbol ':splendid'
+=> :splendid
+Success!
+> books["Gra­vity's Rainb­ow2"] = :kupa­
+=> :kupa
+> books["Gra­vity's Rainb­ow3"] = :locz­ek
+=> :loczek
+> books["Gra­vity's Rainb­ow4"] = :bocz­ek
+=> :boczek
+> books
+=> {"Gravity's Rainbow"=>:splendid, "Gravity's Rainbow2"=>:kupa, "Gravity's Rainbow3"=>:loczek, "Gravity's Rainbow4"=>:boczek}
+>  
+
+***dodanie do siebie dwoch stringow uzywajac: #{zmienna}
+***to sie nazywa interpolacja
+>> first_name = "Michael"    # Variable assignment
+=> "Michael"
+>> "#{first_name} Hartl"     # String interpolation
+=> "Michael Hartl"
+
+***konstrukcja if- else- end
+>> s = "foobar"
+>> if s.empty?
+>>   "The string is empty"
+>> else
+>>   "The string is nonempty"
+>> end
+=> "The string is nonempty"
+
+
+***if pojawia sie w Ruby na koncu wyrazenia:
+>> x = "foo"
+	=> "foo"
+>> y = ""
+	=> ""
+>> puts "Both strings are empty" if x.empty? && y.empty?
+	=> nil
+>> puts "One of the strings is empty" if x.empty? || y.empty?
+	"One of the strings is empty"
+	=> nil
+>> puts "x is not empty" if !x.empty? #jak widac, mozna tez stosowac wykrzyknik
+	"x is not empty"
+=> nil
+
+***uzycie slowa "unless"
+>> string = "foobar"
+>> puts "The string '#{string}' is nonempty." unless string.empty?
+The string 'foobar' is nonempty.
+=> nil
+
+***w ruby tylko nil jest false, nawet zero jest true
+>> if nil
+>>   true
+>> else
+>>   false        # nil is false
+>> end
+	=> false
+
+>> if 0
+>>   true        # 0 (and everything other than nil and false itself) is true
+>> else
+>>   false
+>> end
+	=> true
+
+
+***funkcja, ktora zwraca string
+>> def string_message(string)
+>>   if string.empty?
+>>     "It's an empty string!"
+>>   else
+>>     "The string is nonempty."
+>>   end
+>> end
+	=> nil
+>> puts string_message("")
+	It's an empty string!
+>> puts string_message("foobar")
+	The string is nonempty.
+
+***mozna tez stosowac slowo "return"
+>> def string_message(string)
+>>   return "It's an empty string!" if string.empty?
+>>   return "The string is nonempty."
+>> end
+
+***modul
+
+module ApplicationHelper
+
+  # Returns the full title on a per-page basis.       # Documentation comment
+  def full_title(page_title)                          # Method definition
+    base_title = "Ruby on Rails Tutorial Sample App"  # Variable assignment
+    if page_title.empty?                              # Boolean test
+      base_title                                      # Implicit return
+    else
+      "#{base_title} | #{page_title}"                 # String interpolation
+    end
+  end
+end
+
+modules give us a way to package together related methods, which can then be mixed 
+in to Ruby classes using include. 
+
+***arrays and ranges
+
+>>  "foo bar     baz".split     # Split a string into a three-element array
+	=> ["foo", "bar", "baz"]
+
+>> "fooxbarxbazx".split('x')
+	=> ["foo", "bar", "baz"]
+
+uzycie slow takich jak 'first', 'second', 'last'
+
+>> a = [42, 8, 17]
+>> a.first
+	=> 42
+>> a.second
+	=> 8
+>> a.last
+	=> 17
+>> a.last == a[-1]    # Comparison using ==
+	=> true
+
+
+inne slowa:
+
+>> a
+	=> [42, 8, 17]
+>> a.sort
+	=> [8, 17, 42]
+>> a.reverse
+	=> [17, 8, 42]
+>> a.shuffle
+	=> [17, 42, 8]
+>> a
+	=> [42, 8, 17]
+
+znak '!' powoduje trwale zmienienie zmiennej:
+
+>> a
+	=> [42, 8, 17]
+>> a.sort!
+	=> [8, 17, 42]
+>> a
+
+
+	=> [8, 17, 42]
+
+
+***rozumienie range, to_a, shuffle, pobranie pierwszych osmiu elementow, polaczenie ich w stringa
+('a'..'z').to_a.shuffle[0..7].join
+
+Let’s build it up step-by-step:
+
+>> ('a'..'z').to_a                     # An alphabet array
+=> ["a", "b", "c", "d", "e", "f", "g", "h", "i", "j", "k", "l", "m", "n", "o",
+"p", "q", "r", "s", "t", "u", "v", "w", "x", "y", "z"]
+>> ('a'..'z').to_a.shuffle             # Shuffle it.
+=> ["c", "g", "l", "k", "h", "z", "s", "i", "n", "d", "y", "u", "t", "j", "q",
+"b", "r", "o", "f", "e", "w", "v", "m", "a", "x", "p"]
+>> ('a'..'z').to_a.shuffle[0..7]       # Pull out the first eight elements.
+=> ["f", "w", "i", "a", "h", "p", "c", "x"]
+>> ('a'..'z').to_a.shuffle[0..7].join  # Join them together to make one string.
+=> "mznpybuj"
+
+
+
+***hashes, to macierz skladajaca sie z par key-value
+>> user = {}                          # {} is an empty hash.
+=> {}
+>> user["first_name"] = "Michael"     # Key "first_name", value "Michael"
+=> "Michael"
+>> user["last_name"] = "Hartl"        # Key "last_name", value "Hartl"
+=> "Hartl"
+>> user["first_name"]                 # Element access is like arrays.
+=> "Michael"
+>> user                               # A literal representation of the hash
+=> {"last_name"=>"Hartl", "first_name"=>"Michael"}
+
+
+>> user = { "first_name" => "Michael", "last_name" => "Hartl" }
+=> {"last_name"=>"Hartl", "first_name"=>"Michael"}
+
+Here I’ve used the usual Ruby convention of putting an extra space at the two ends of the hash—a convention ignored by the console output. (Don’t ask me why the spaces are conventional; probably some early influential Ruby programmer liked the look of the extra spaces, and the convention stuck.)
+
+***symbol, symbol to zmienna :zmienna
+mozna to traktowac jak index
+
+indeksujemy hash'a o nazwie user 
+>> user = { :name => "Michael Hartl", :email => "michael@example.com" }
+=> {:name=>"Michael Hartl", :email=>"michael@example.com"}
+>> user[:name]              # Access the value corresponding to :name.
+=> "Michael Hartl"
+>> user[:password]          # Access the value of an undefined key.
+=> nil
+
+indeksujemy hash'a o nazwie user w inny sposob:
+>> h1 = { :name => "Michael Hartl", :email => "michael@example.com" }
+=> {:name=>"Michael Hartl", :email=>"michael@example.com"}
+>> h2 = { name: "Michael Hartl", email: "michael@example.com" }
+=> {:name=>"Michael Hartl", :email=>"michael@example.com"} 
+>> h1 == h2
+=> true
+
+nested hashes
+>> params = {}        # Define a hash called 'params' (short for 'parameters').
+=> {}
+>> params[:user] = { name: "Michael Hartl", email: "mhartl@example.com" }
+=> {:name=>"Michael Hartl", :email=>"mhartl@example.com"}
+>> params
+=> {:user=>{:name=>"Michael Hartl", :email=>"mhartl@example.com"}}
+>>  params[:user][:email]
+=> "mhartl@example.com"
+
+
+
+*** each dla hash'a iteruje po parach key-value
+>> flash = { success: "It worked!", error: "It failed." } #tutaj mamy dwie pary key-value
+=> {:success=>"It worked!", :error=>"It failed."}
+>> flash.each do |key, value|
+?>   puts "Key #{key.inspect} has value #{value.inspect}"
+>> end
+	Key :success has value "It worked!"
+	Key :error has value "It failed."
+
+*** metoda inspect- returns a string with a literal representation of the object it’s called on:
+
+>> puts (1..5).to_a            # Put an array as a string.
+1
+2
+3
+4
+5
+>> puts (1..5).to_a.inspect    # Put a literal array.
+	[1, 2, 3, 4, 5]
+>> puts :name, :name.inspect
+	name
+	:name
+>> puts "It worked!", "It worked!".inspect
+	It worked!
+	"It worked!"
+
+
+By the way, using inspect to print an object is common enough that there’s a shortcut for it, the p function:
+
+>> p :name             # Same as 'puts :name.inspect'
+:name
+
+***
+
+>> h = Hash.new
+	=> {}
+>> h[:foo]            # Try to access the value for the nonexistent key :foo.
+	=> nil
+>> h = Hash.new(0)    # Arrange for nonexistent keys to return 0 instead of nil.
+	=> {}
+>> h[:foo]
+	=> 0
+
+
+***Klasy, hierarchia
+
+>> s = String.new("foobar")
+	=> "foobar"
+>> s.class                        # Find the class of s.
+	=> String
+>> s.class.superclass             # Find the superclass of String.
+	=> Object
+>> s.class.superclass.superclass  # Ruby 1.9 uses a new BasicObject base class
+	=> BasicObject 
+>> s.class.superclass.superclass.superclass
+	=> nil
+
+
+Word dziedziczy ze String:
+
+>> class Word < String             # Word inherits from String.
+>>   # Returns true if the string is its own reverse.
+>>   def palindrome?  #znak zapytania na koncu jest dozwolony, to tylko taki hint dla uczynienia kodu bardziej czytelnym
+>>     self == self.reverse        # self is the string itself.
+>>   end
+>> end
+	=> nil
+
+
+Mozliwe jest dopisanie metody do pre-definiowanej klasy
+>> class String
+>>   # Returns true if the string is its own reverse.
+>>   def palindrome?
+>>     self == self.reverse
+>>   end
+>> end
+	=> nil
+>> "deified".palindrome?
+	=> true
+
+*** uruchomienie kodu z utworzonego wczesniej pliku
+	
+example_user.rb #nazwa pliku
+class User      #klasa
+  attr_accessor :name, :email
+
+  def initialize(attributes = {})
+    @name  = attributes[:name]
+    @email = attributes[:email]
+  end
+
+  def formatted_email
+    "#{@name} <#{@email}>"
+  end
+end
+
+>> require './example_user'     # This is how you load the example_user code.
+	=> ["User"]
+>> example = User.new
+	=> #<User:0x224ceec @email=nil, @name=nil>
+>> example.name                 # nil since attributes[:name] is nil
+	=> nil
+>> example.name = "Example User"           # Assign a non-nil name
+	=> "Example User"
+>> example.email = "user@example.com"      # and a non-nil email address
+	=> "user@example.com"
+>> example.formatted_email
+	=> "Example User <user@example.com>"
+
+
